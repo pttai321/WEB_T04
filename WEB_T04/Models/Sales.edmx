@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SalesERPDALModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DEPARTMENT">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EMPLOYEE">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salary" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="DepartmentID" Type="int" />
+        </EntityType>
+        <Association Name="Fk_EMPLOYEE_DEPARMENT">
+          <End Role="DEPARTMENT" Type="Self.DEPARTMENT" Multiplicity="0..1" />
+          <End Role="EMPLOYEE" Type="Self.EMPLOYEE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="EMPLOYEE">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SalesERPDALModelStoreContainer">
+          <EntitySet Name="DEPARTMENT" EntityType="Self.DEPARTMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMPLOYEE" EntityType="Self.EMPLOYEE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Fk_EMPLOYEE_DEPARMENT" Association="Self.Fk_EMPLOYEE_DEPARMENT">
+            <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
+            <End Role="EMPLOYEE" EntitySet="EMPLOYEE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SalesERPDALModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DEPARTMENT">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EMPLOYEEs" Relationship="Self.Fk_EMPLOYEE_DEPARMENT" FromRole="DEPARTMENT" ToRole="EMPLOYEE" />
+        </EntityType>
+        <EntityType Name="EMPLOYEE">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Salary" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="DepartmentID" Type="Int32" />
+          <NavigationProperty Name="DEPARTMENT" Relationship="Self.Fk_EMPLOYEE_DEPARMENT" FromRole="EMPLOYEE" ToRole="DEPARTMENT" />
+        </EntityType>
+        <Association Name="Fk_EMPLOYEE_DEPARMENT">
+          <End Role="DEPARTMENT" Type="Self.DEPARTMENT" Multiplicity="0..1" />
+          <End Role="EMPLOYEE" Type="Self.EMPLOYEE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="EMPLOYEE">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SalesERPDALEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DEPARTMENTs" EntityType="Self.DEPARTMENT" />
+          <EntitySet Name="EMPLOYEEs" EntityType="Self.EMPLOYEE" />
+          <AssociationSet Name="Fk_EMPLOYEE_DEPARMENT" Association="Self.Fk_EMPLOYEE_DEPARMENT">
+            <End Role="DEPARTMENT" EntitySet="DEPARTMENTs" />
+            <End Role="EMPLOYEE" EntitySet="EMPLOYEEs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SalesERPDALModelStoreContainer" CdmEntityContainer="SalesERPDALEntities">
+          <EntitySetMapping Name="DEPARTMENTs">
+            <EntityTypeMapping TypeName="SalesERPDALModel.DEPARTMENT">
+              <MappingFragment StoreEntitySet="DEPARTMENT">
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMPLOYEEs">
+            <EntityTypeMapping TypeName="SalesERPDALModel.EMPLOYEE">
+              <MappingFragment StoreEntitySet="EMPLOYEE">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
